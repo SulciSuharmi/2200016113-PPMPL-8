@@ -22,24 +22,28 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building the application...'
-                // Tambahkan perintah build jika diperlukan, contoh:
-                // sh 'npm run build'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying the application...'
-                // Tambahkan perintah deploy jika diperlukan, contoh:
-                // sh './deploy.sh'
             }
         }
     }
-    post {
-        success {
-            echo 'Pipeline finished successfully!'
-        }
-        failure {
-            echo 'Pipeline failed!'
+    post { 
+        success { 
+            emailext (
+                subject: 'Build Succeeded', 
+                body: 'The build succeeded!', 
+                to: '2200016113@webmail.uad.ac.id',
+                recipientProviders: [] )
+        } 
+        failure { 
+            emailext (
+                subject: 'Build Failed',
+                body: 'The build failed.', 
+                to: '2200016113@webmail.uad.ac.id',
+                recipientProviders: []) 
         }
     }
 }
