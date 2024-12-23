@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8.git'
+                git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
             }
         }
         stage('Install Dependencies') {
