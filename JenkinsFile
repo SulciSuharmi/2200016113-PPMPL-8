@@ -19,6 +19,12 @@ pipeline {
                 sh 'npm test'
             }
         }
+        stage('Run Integration Tests') {
+            steps {
+                echo 'Running integration tests...'
+                sh 'npm run test:integration' // Pastikan script ini ada di package.json
+            }
+        }
         stage('Build') {
             steps {
                 echo 'Building the application...'
