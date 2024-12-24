@@ -6,7 +6,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
+                script {
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    if (branch == 'main') {
+                        git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
+                    } else if (branch == 'develop') {
+                        git branch: 'develop', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
+                    }
+                }
             }
         }
         stage('Install Dependencies') {
@@ -16,13 +23,14 @@ pipeline {
         }
         stage('Run Unit Tests') {
             steps {
-                sh 'npm test'
+                sh 'npm run test:unit'
+
             }
         }
         stage('Run Integration Tests') {
             steps {
                 echo 'Running integration tests...'
-                sh 'npm run test:integration' // Pastikan script ini ada di package.json
+                sh 'npm run test:integration' 
             }
         }
         stage('Build') {
