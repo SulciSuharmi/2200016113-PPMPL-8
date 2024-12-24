@@ -38,9 +38,9 @@ pipeline {
                 echo 'Building the application...'
             }
         }
-        stage('Deploy') {
+        stage('Deploy To Staging') {
             steps {
-                echo 'Deploying the application...'
+                echo 'Deploying the application to staging...'
             }
         }
     }
