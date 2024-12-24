@@ -1,17 +1,23 @@
 pipeline {
     agent any
-    environment {
-        CI = 'true'
-    }
+    environment { CI = 'true' }
     stages {
+        stage('Debug Context') {
+            steps {
+                script {
+                    def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
+                    echo "Current Branch Name: ${branch}"
+                }
+            }
+        }
         stage('Checkout') {
             steps {
                 script {
                     def branch = env.BRANCH_NAME ?: env.GIT_BRANCH
                     if (branch == 'main') {
-                        git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
+                        git branch: 'main', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8.git'
                     } else if (branch == 'develop') {
-                        git branch: 'develop', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8'
+                        git branch: 'develop', url: 'https://github.com/SulciSuharmi/2200016113-PPMPL-8.git'
                     }
                 }
             }
@@ -24,23 +30,21 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                 sh 'npm run test:unit'
-
             }
         }
         stage('Run Integration Tests') {
             steps {
-                echo 'Running integration tests...'
-                sh 'npm run test:integration' 
+                sh 'npm run test:integration'
             }
         }
         stage('Build') {
             steps {
-                echo 'Building the application...'
+            echo 'Building the application...'
             }
         }
-        stage('Deploy To Staging') {
+        stage('Deploy to Staging') {
             steps {
-                echo 'Deploying the application to staging...'
+                echo 'Simulating deployment to staging...'
             }
         }
     }
@@ -49,15 +53,15 @@ pipeline {
             emailext (
                 subject: 'Build Succeeded', 
                 body: 'The build succeeded!', 
-                to: '2200016113@webmail.uad.ac.id',
-                recipientProviders: [] )
+                to: '2200016113@webmail.uad.ac.id'
+            )
         } 
         failure { 
             emailext (
                 subject: 'Build Failed',
                 body: 'The build failed.', 
-                to: '2200016113@webmail.uad.ac.id',
-                recipientProviders: []) 
-        }
+                to: '2200016113@webmail.uad.ac.id'
+            )
+        } 
     }
 }
